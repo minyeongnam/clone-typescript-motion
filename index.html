@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<head lang="ko">
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="./css/index.css" rel="stylesheet" />
+<title>MOTION</title>
+</head>
+<body>
+    <div class="wrap">
+        <header class="header">
+            <h1>MOTION</h1>
+            <div class="btnset">
+                <button type="button" onclick="front.modalShow('add-image')">IMAGE</button>
+                <button type="button"onclick="front.modalShow('add-image')">VIDEO</button>
+                <button type="button"onclick="front.modalShow('add-note')">NOTE</button>
+                <button type="button"onclick="front.modalShow('add-note')">TASK</button>
+            </div>
+        </header>
+        <div class="container">
+            <div class="list-motion">
+                <ul>
+                </ul>
+            </div>
+        </div>
+        <footer class="footer">footer</footer>
+    </div>
+    <div class="modal-wrap">
+        <div class="modal add-image">
+            <button type="button" onclick="front.modalHide('add-image')">close</button>
+            <div class="modal-contents">
+                <div>
+                    <label>Title</label>
+                    <span><input type="text" /></span>
+                </div>
+                <div>
+                    <label>URL</label>
+                    <span><input type="text" /></span>
+                </div>
+                <button type="button">ADD</button>
+            </div>            
+        </div>
+        <div class="modal add-note">
+            <button type="button" onclick="front.modalHide('add-note')">close</button>
+            <div class="modal-contents">
+                <div>
+                    <label>Title</label>
+                    <span><input type="text" /></span>
+                </div>
+                <div>
+                    <label>body</label>
+                    <span><textarea></textarea></span>
+                </div>
+                <button type="button">ADD</button>
+            </div>
+        </div>
+    </div>
+    <script src="./dist/js/index.js"></script>
+</body>
+</html>
