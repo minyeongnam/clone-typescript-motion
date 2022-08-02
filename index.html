@@ -2,25 +2,23 @@
 <head lang="ko">
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<link href="./css/index.css" rel="stylesheet" />
 <title>MOTION</title>
+<link href="./css/index.css" rel="stylesheet" />
+<script type="module" src="./dist/app.js" defer></script>
 </head>
 <body>
     <div class="wrap">
         <header class="header">
-            <h1>MOTION</h1>
-            <div class="btnset">
-                <button type="button" onclick="front.modalShow('add-image', 'image')">IMAGE</button>
-                <button type="button"onclick="front.modalShow('add-image', 'video')">VIDEO</button>
-                <button type="button"onclick="front.modalShow('add-note', 'note')">NOTE</button>
-                <button type="button"onclick="front.modalShow('add-note', 'task')">TASK</button>
+            <h1 class="header__title">MOTION</h1>
+            <div class="control-panel">
+                <button type="button" id="add-image" class="control-btn" onclick="front.modalShow('add-image', 'image')">IMAGE</button>
+                <button type="button" id="add-video" class="control-btn" onclick="front.modalShow('add-image', 'video')">VIDEO</button>
+                <button type="button" id="add-note" class="control-btn" onclick="front.modalShow('add-note', 'note')">NOTE</button>
+                <button type="button" id="add-task" class="control-btn" onclick="front.modalShow('add-note', 'task')">TASK</button>
             </div>
         </header>
         <div class="container">
-            <div class="list-motion">
-                <ul>
-                </ul>
-            </div>
+            <div class="document"></div>
         </div>
         <footer class="footer">footer</footer>
     </div>
@@ -54,6 +52,6 @@
             </div>
         </div>
     </div>
-    <script src="./dist/js/index.js"></script>
+    
 </body>
 </html>
