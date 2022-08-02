@@ -10,10 +10,10 @@
         <header class="header">
             <h1>MOTION</h1>
             <div class="btnset">
-                <button type="button" onclick="front.modalShow('add-image')">IMAGE</button>
-                <button type="button"onclick="front.modalShow('add-image')">VIDEO</button>
-                <button type="button"onclick="front.modalShow('add-note')">NOTE</button>
-                <button type="button"onclick="front.modalShow('add-note')">TASK</button>
+                <button type="button" onclick="front.modalShow('add-image', 'image')">IMAGE</button>
+                <button type="button"onclick="front.modalShow('add-image', 'video')">VIDEO</button>
+                <button type="button"onclick="front.modalShow('add-note', 'note')">NOTE</button>
+                <button type="button"onclick="front.modalShow('add-note', 'task')">TASK</button>
             </div>
         </header>
         <div class="container">
@@ -36,7 +36,7 @@
                     <label>URL</label>
                     <span><input type="text" /></span>
                 </div>
-                <button type="button">ADD</button>
+                <button type="button" class="btn-add">ADD</button>
             </div>            
         </div>
         <div class="modal add-note">
@@ -50,7 +50,7 @@
                     <label>body</label>
                     <span><textarea></textarea></span>
                 </div>
-                <button type="button">ADD</button>
+                <button type="button" class="btn-add">ADD</button>
             </div>
         </div>
     </div>

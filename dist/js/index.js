@@ -4,21 +4,32 @@ class frontUI {
     modalHide(id: string): void; */
     constructor() {
         this.modalWrap = document.querySelector('.modal-wrap');
+        this.activeModal = null;
+        this.addBtn = null;
+        this.modalType = '';
     }
-    modalShow(id) {
-        const modal = document.querySelector(`.${id}`);
+    modalShow(modalName, modalType) {
+        this.activeModal = document.querySelector(`.${modalName}`);
+        this.activeModal.classList.add('active');
         this.modalWrap.style.display = 'block';
-        modal.style.display = 'block';
+        this.activeModal.style.display = 'block';
+        this.modalType = modalType;
+        this.addBtn = document.querySelector('.modal.active .btn-add');
+        if (this.addBtn) {
+            this.addBtn.addEventListener('click', this.addClick, true);
+        }
     }
-    modalHide(id) {
-        const modal = document.querySelector(`.${id}`);
-        this.modalWrap.style.display = 'none';
-        modal.style.display = 'none';
+    modalHide() {
+        if (this.activeModal && this.addBtn) {
+            this.modalWrap.style.display = 'none';
+            this.activeModal.style.display = 'none';
+            this.addBtn.removeEventListener('click', this.addClick, true);
+        }
     }
-    addItem(type) {
+    addItem() {
         const list = document.querySelector('.list-motion > ul');
         let element = document.createElement('li');
-        switch (type) {
+        switch (this.modalType) {
             case 'image':
                 {
                     element.setAttribute('class', 'item-image');
@@ -55,6 +66,9 @@ class frontUI {
                 break;
         }
         list.appendChild(element);
+    }
+    addClick() {
+        return this.addItem.bind(this);
     }
 }
 const front = new frontUI();
