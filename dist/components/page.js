@@ -2,12 +2,19 @@ import { BaseComponent } from './item/base.js';
 class pageItemComponent extends BaseComponent {
     constructor() {
         super(`<li class="page__item">
-              <button type="button">close</button>
+              <button type="button" class="btn-delete">close</button>
            </li>`);
+        const deleteBtn = this.element.querySelector('.btn-delete');
+        deleteBtn.onclick = () => {
+            this.onDeleteListener && this.onDeleteListener();
+        };
     }
     addChild(child) {
         const container = this.element;
         child.attachTo(container);
+    }
+    setDeleteListener(listener) {
+        this.onDeleteListener = listener;
     }
 }
 export class PageComponent extends BaseComponent {
@@ -16,10 +23,10 @@ export class PageComponent extends BaseComponent {
     }
     addChild(section) {
         const item = new pageItemComponent();
-        console.log(item);
-        console.log(section);
         item.addChild(section);
-        console.log(this.element);
         item.attachTo(this.element, 'beforeend');
+        item.setDeleteListener(() => {
+            item.removeFrom(this.element);
+        });
     }
 }

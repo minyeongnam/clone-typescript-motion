@@ -3,18 +3,31 @@ import { BaseComponent, Component } from './item/base.js';
 export interface Composable {
   addChild(child: Component): void;
 }
+
+type OnDeleteListener = () => void;
 class pageItemComponent
   extends BaseComponent<HTMLElement>
   implements Composable
 {
+  private onDeleteListener?: OnDeleteListener;
   constructor() {
     super(`<li class="page__item">
-              <button type="button">close</button>
+              <button type="button" class="btn-delete">close</button>
            </li>`);
+    const deleteBtn = this.element.querySelector(
+      '.btn-delete'
+    )! as HTMLButtonElement;
+
+    deleteBtn.onclick = () => {
+      this.onDeleteListener && this.onDeleteListener();
+    };
   }
   addChild(child: Component) {
     const container = this.element! as HTMLElement;
     child.attachTo(container);
+  }
+  setDeleteListener(listener: OnDeleteListener) {
+    this.onDeleteListener = listener;
   }
 }
 
@@ -27,10 +40,10 @@ export class PageComponent
   }
   addChild(section: Component) {
     const item = new pageItemComponent();
-    console.log(item);
-    console.log(section);
     item.addChild(section);
-    console.log(this.element);
     item.attachTo(this.element, 'beforeend');
+    item.setDeleteListener(() => {
+      item.removeFrom(this.element);
+    });
   }
 }
