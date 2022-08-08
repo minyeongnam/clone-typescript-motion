@@ -5,13 +5,21 @@ export interface Composable {
 }
 
 type OnDeleteListener = () => void;
-class pageItemComponent
+
+export interface SectionContainer extends Component, Composable {
+  setDeleteListener(listener: OnDeleteListener): void;
+}
+
+type SectionContainerConstructor = {
+  new (): SectionContainer;
+};
+export class pageItemComponent
   extends BaseComponent<HTMLElement>
-  implements Composable
+  implements SectionContainer
 {
   private onDeleteListener?: OnDeleteListener;
   constructor() {
-    super(`<li class="page__item">
+    super(`<li class="page-item">
               <button type="button" class="btn-delete">close</button>
            </li>`);
     const deleteBtn = this.element.querySelector(
@@ -35,11 +43,11 @@ export class PageComponent
   extends BaseComponent<HTMLUListElement>
   implements Composable
 {
-  constructor() {
+  constructor(private pageItemConstructor: SectionContainerConstructor) {
     super('<ul class="page"></ul>');
   }
   addChild(section: Component) {
-    const item = new pageItemComponent();
+    const item = new this.pageItemConstructor();
     item.addChild(section);
     item.attachTo(this.element, 'beforeend');
     item.setDeleteListener(() => {

@@ -11,10 +11,10 @@
         <header class="header">
             <h1 class="header__title">MOTION</h1>
             <div class="control-panel">
-                <button type="button" id="add-image" class="control-btn" onclick="front.modalShow('add-image', 'image')">IMAGE</button>
-                <button type="button" id="add-video" class="control-btn" onclick="front.modalShow('add-image', 'video')">VIDEO</button>
-                <button type="button" id="add-note" class="control-btn" onclick="front.modalShow('add-note', 'note')">NOTE</button>
-                <button type="button" id="add-task" class="control-btn" onclick="front.modalShow('add-note', 'task')">TASK</button>
+                <button type="button" id="add-image" class="control-btn">IMAGE</button>
+                <button type="button" id="add-video" class="control-btn">VIDEO</button>
+                <button type="button" id="add-note" class="control-btn">NOTE</button>
+                <button type="button" id="add-task" class="control-btn">TASK</button>
             </div>
         </header>
         <div class="container">
@@ -22,36 +22,7 @@
         </div>
         <footer class="footer">footer</footer>
     </div>
-    <div class="modal-wrap">
-        <div class="modal add-image">
-            <button type="button" onclick="front.modalHide('add-image')">close</button>
-            <div class="modal-contents">
-                <div>
-                    <label>Title</label>
-                    <span><input type="text" /></span>
-                </div>
-                <div>
-                    <label>URL</label>
-                    <span><input type="text" /></span>
-                </div>
-                <button type="button" class="btn-add">ADD</button>
-            </div>            
-        </div>
-        <div class="modal add-note">
-            <button type="button" onclick="front.modalHide('add-note')">close</button>
-            <div class="modal-contents">
-                <div>
-                    <label>Title</label>
-                    <span><input type="text" /></span>
-                </div>
-                <div>
-                    <label>body</label>
-                    <span><textarea></textarea></span>
-                </div>
-                <button type="button" class="btn-add">ADD</button>
-            </div>
-        </div>
-    </div>
+    <div class="modal-wrap"></div>
     
 </body>
 </html>

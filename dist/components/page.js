@@ -1,7 +1,7 @@
 import { BaseComponent } from './item/base.js';
-class pageItemComponent extends BaseComponent {
+export class pageItemComponent extends BaseComponent {
     constructor() {
-        super(`<li class="page__item">
+        super(`<li class="page-item">
               <button type="button" class="btn-delete">close</button>
            </li>`);
         const deleteBtn = this.element.querySelector('.btn-delete');
@@ -18,11 +18,12 @@ class pageItemComponent extends BaseComponent {
     }
 }
 export class PageComponent extends BaseComponent {
-    constructor() {
+    constructor(pageItemConstructor) {
         super('<ul class="page"></ul>');
+        this.pageItemConstructor = pageItemConstructor;
     }
     addChild(section) {
-        const item = new pageItemComponent();
+        const item = new this.pageItemConstructor();
         item.addChild(section);
         item.attachTo(this.element, 'beforeend');
         item.setDeleteListener(() => {
