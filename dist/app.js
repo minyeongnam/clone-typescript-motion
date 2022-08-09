@@ -3,83 +3,36 @@ import { VideoComponent } from './components/item/video.js';
 import { NoteCompontent } from './components/item/note.js';
 import { TaskCompontent } from './components/item/task.js';
 import { PageComponent, pageItemComponent, } from './components/page.js';
-import { InputDialog } from './components/dialog/dialog.js';
+import { InputDialog, } from './components/dialog/dialog.js';
 import { MediaInput } from './components/dialog/input/mediaInput.js';
 import { TextInput } from './components/dialog/input/textIInput.js';
 class App {
     constructor(appRoot, dialogRoot) {
+        this.dialogRoot = dialogRoot;
         this.page = new PageComponent(pageItemComponent);
         this.page.attachTo(appRoot);
-        const imageBtn = document.querySelector('#add-image');
-        imageBtn.addEventListener('click', () => {
-            dialogRoot.style.display = 'block';
+        this.bindElementToDialog('#add-image', MediaInput, (input) => new ImageComponent(input.title, input.url));
+        this.bindElementToDialog('#add-video', MediaInput, (input) => new VideoComponent(input.title, input.url));
+        this.bindElementToDialog('#add-note', TextInput, (input) => new NoteCompontent(input.title, input.textarea));
+        this.bindElementToDialog('#add-task', TextInput, (input) => new TaskCompontent(input.title, input.textarea));
+    }
+    bindElementToDialog(selector, InputComponent, makeSection) {
+        const element = document.querySelector(selector);
+        element.addEventListener('click', () => {
+            this.dialogRoot.style.display = 'block';
             const dialog = new InputDialog();
-            const mediaInput = new MediaInput();
-            dialog.addChild(mediaInput);
-            dialog.attachTo(dialogRoot);
+            const input = new InputComponent();
+            dialog.addChild(input);
+            dialog.attachTo(this.dialogRoot);
             dialog.setCloseListener(() => {
-                dialogRoot.style.display = 'none';
-                dialog.removeFrom(dialogRoot);
+                this.dialogRoot.style.display = 'none';
+                dialog.removeFrom(this.dialogRoot);
             });
             dialog.setSubmitListener(() => {
-                const image = new ImageComponent(mediaInput.title, mediaInput.url);
+                const image = makeSection(input);
                 this.page.addChild(image);
-                dialog.removeFrom(dialogRoot);
-                dialogRoot.style.display = 'none';
-            });
-        });
-        const videoBtn = document.querySelector('#add-video');
-        videoBtn.addEventListener('click', () => {
-            dialogRoot.style.display = 'block';
-            const dialog = new InputDialog();
-            const mediaInput = new MediaInput();
-            dialog.addChild(mediaInput);
-            dialog.attachTo(dialogRoot);
-            dialog.setCloseListener(() => {
-                dialogRoot.style.display = 'none';
-                dialog.removeFrom(dialogRoot);
-            });
-            dialog.setSubmitListener(() => {
-                const video = new VideoComponent(mediaInput.title, mediaInput.url);
-                this.page.addChild(video);
-                dialog.removeFrom(dialogRoot);
-                dialogRoot.style.display = 'none';
-            });
-        });
-        const noteBtn = document.querySelector('#add-note');
-        noteBtn.addEventListener('click', () => {
-            dialogRoot.style.display = 'block';
-            const dialog = new InputDialog();
-            const textInput = new TextInput();
-            dialog.addChild(textInput);
-            dialog.attachTo(dialogRoot);
-            dialog.setCloseListener(() => {
-                dialogRoot.style.display = 'none';
-                dialog.removeFrom(dialogRoot);
-            });
-            dialog.setSubmitListener(() => {
-                const note = new NoteCompontent(textInput.title, textInput.textarea);
-                this.page.addChild(note);
-                dialog.removeFrom(dialogRoot);
-                dialogRoot.style.display = 'none';
-            });
-        });
-        const taskBtn = document.querySelector('#add-task');
-        taskBtn.addEventListener('click', () => {
-            dialogRoot.style.display = 'block';
-            const dialog = new InputDialog();
-            const textInput = new TextInput();
-            dialog.addChild(textInput);
-            dialog.attachTo(dialogRoot);
-            dialog.setCloseListener(() => {
-                dialogRoot.style.display = 'none';
-                dialog.removeFrom(dialogRoot);
-            });
-            dialog.setSubmitListener(() => {
-                const task = new TaskCompontent(textInput.title, textInput.textarea);
-                this.page.addChild(task);
-                dialog.removeFrom(dialogRoot);
-                dialogRoot.style.display = 'none';
+                dialog.removeFrom(this.dialogRoot);
+                this.dialogRoot.style.display = 'none';
             });
         });
     }

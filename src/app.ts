@@ -8,103 +8,74 @@ import {
   PageComponent,
   pageItemComponent,
 } from './components/page.js';
-import { InputDialog } from './components/dialog/dialog.js';
+import {
+  InputDialog,
+  MediaData,
+  TextData,
+} from './components/dialog/dialog.js';
 import { MediaInput } from './components/dialog/input/mediaInput.js';
 import { TextInput } from './components/dialog/input/textIInput.js';
 
+type InputComponent<T = (MediaData | TextData) & Component> = {
+  new (): T;
+};
 class App {
   private readonly page: Component & Composable;
 
-  constructor(appRoot: HTMLElement, dialogRoot: HTMLElement) {
+  constructor(appRoot: HTMLElement, private dialogRoot: HTMLElement) {
     this.page = new PageComponent(pageItemComponent);
     this.page.attachTo(appRoot);
 
-    const imageBtn = document.querySelector('#add-image')! as HTMLButtonElement;
-    imageBtn.addEventListener('click', () => {
-      dialogRoot.style.display = 'block';
+    this.bindElementToDialog<MediaInput>(
+      '#add-image',
+      MediaInput,
+      (input: MediaInput) => new ImageComponent(input.title, input.url)
+    );
+
+    this.bindElementToDialog<MediaInput>(
+      '#add-video',
+      MediaInput,
+      (input: MediaInput) => new VideoComponent(input.title, input.url)
+    );
+
+    this.bindElementToDialog<TextInput>(
+      '#add-note',
+      TextInput,
+      (input: TextInput) => new NoteCompontent(input.title, input.textarea)
+    );
+
+    this.bindElementToDialog<TextInput>(
+      '#add-task',
+      TextInput,
+      (input: TextInput) => new TaskCompontent(input.title, input.textarea)
+    );
+  }
+
+  private bindElementToDialog<T extends (MediaData | TextData) & Component>(
+    selector: string,
+    InputComponent: InputComponent<T>,
+    makeSection: (input: T) => Component
+  ) {
+    const element = document.querySelector(selector)! as HTMLButtonElement;
+    element.addEventListener('click', () => {
+      this.dialogRoot.style.display = 'block';
 
       const dialog = new InputDialog();
-      const mediaInput = new MediaInput();
+      const input = new InputComponent();
 
-      dialog.addChild(mediaInput);
-      dialog.attachTo(dialogRoot);
+      dialog.addChild(input);
+      dialog.attachTo(this.dialogRoot);
 
       dialog.setCloseListener(() => {
-        dialogRoot.style.display = 'none';
-        dialog.removeFrom(dialogRoot);
+        this.dialogRoot.style.display = 'none';
+        dialog.removeFrom(this.dialogRoot);
       });
 
       dialog.setSubmitListener(() => {
-        const image = new ImageComponent(mediaInput.title, mediaInput.url);
+        const image = makeSection(input);
         this.page.addChild(image);
-        dialog.removeFrom(dialogRoot);
-        dialogRoot.style.display = 'none';
-      });
-    });
-    const videoBtn = document.querySelector('#add-video')! as HTMLButtonElement;
-    videoBtn.addEventListener('click', () => {
-      dialogRoot.style.display = 'block';
-
-      const dialog = new InputDialog();
-      const mediaInput = new MediaInput();
-
-      dialog.addChild(mediaInput);
-      dialog.attachTo(dialogRoot);
-
-      dialog.setCloseListener(() => {
-        dialogRoot.style.display = 'none';
-        dialog.removeFrom(dialogRoot);
-      });
-
-      dialog.setSubmitListener(() => {
-        const video = new VideoComponent(mediaInput.title, mediaInput.url);
-        this.page.addChild(video);
-        dialog.removeFrom(dialogRoot);
-        dialogRoot.style.display = 'none';
-      });
-    });
-    const noteBtn = document.querySelector('#add-note')! as HTMLButtonElement;
-    noteBtn.addEventListener('click', () => {
-      dialogRoot.style.display = 'block';
-
-      const dialog = new InputDialog();
-      const textInput = new TextInput();
-
-      dialog.addChild(textInput);
-      dialog.attachTo(dialogRoot);
-
-      dialog.setCloseListener(() => {
-        dialogRoot.style.display = 'none';
-        dialog.removeFrom(dialogRoot);
-      });
-
-      dialog.setSubmitListener(() => {
-        const note = new NoteCompontent(textInput.title, textInput.textarea);
-        this.page.addChild(note);
-        dialog.removeFrom(dialogRoot);
-        dialogRoot.style.display = 'none';
-      });
-    });
-    const taskBtn = document.querySelector('#add-task')! as HTMLButtonElement;
-    taskBtn.addEventListener('click', () => {
-      dialogRoot.style.display = 'block';
-
-      const dialog = new InputDialog();
-      const textInput = new TextInput();
-
-      dialog.addChild(textInput);
-      dialog.attachTo(dialogRoot);
-
-      dialog.setCloseListener(() => {
-        dialogRoot.style.display = 'none';
-        dialog.removeFrom(dialogRoot);
-      });
-
-      dialog.setSubmitListener(() => {
-        const task = new TaskCompontent(textInput.title, textInput.textarea);
-        this.page.addChild(task);
-        dialog.removeFrom(dialogRoot);
-        dialogRoot.style.display = 'none';
+        dialog.removeFrom(this.dialogRoot);
+        this.dialogRoot.style.display = 'none';
       });
     });
   }
